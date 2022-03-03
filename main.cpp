@@ -95,7 +95,7 @@ void write_JPEG_file(char *filename, char* image_buffer,int image_width,int imag
 		* Here the array is only one element long, but you could pass
 		* more than one scanline at a time if that's more convenient.
 		*/
-		row_pointer[0] = &image_buffer[cinfo.next_scanline * row_stride];
+		row_pointer[0] = (JSAMPROW) &image_buffer[cinfo.next_scanline * row_stride];
 		(void)jpeg_write_scanlines(&cinfo, row_pointer, 1);
 	}
 
