@@ -79,7 +79,7 @@ typedef JCOEF *JCOEFPTR;        /* useful in a couple of places */
 
 
 /* Types for JPEG compression parameters and working tables. */
-
+#include <cstdio>
 
 /* DCT coefficient quantization tables. */
 
