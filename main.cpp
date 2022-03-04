@@ -9,7 +9,7 @@ int main()
     for(int i=0;i<100;i++)
         for(int j=0;j<100;j++)
             buf.SetPixel(i,j,0,255,0);
-    cout << buf.GetR(0,0) << endl;
+    cout << (int)buf.GetR(0,0) << endl;
     buf.Save("targ.jpg");
     return 0;
 }
