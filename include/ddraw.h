@@ -12,14 +12,18 @@ public:
     }
     PixelBuffer(int width,int height) : buf(new unsigned char[width * height * 3]),
                                         w(width),h(height){}
-    PixelBuffer(Eigen::MatrixXi &mat) : w(mat.rows()),h(mat.cols()),
+    PixelBuffer(Eigen::MatrixXi &mat,bool isBoolean) : w(mat.rows()),h(mat.cols()),
                                         buf(new unsigned char[mat.rows() * mat.cols() * 3]){
         for(int i = 0;i < w;i++){
             for(int j = 0;j < h;j++){
-                if(mat(i,j)){
-                    SetPixel(i,j,255,255,255);
+                if(isBoolean){
+                    if(mat(i,j)){
+                        SetPixel(i,j,255,255,255);
+                    }else{
+                        SetPixel(i,j,0,0,0);
+                    }
                 }else{
-                    SetPixel(i,j,0,0,0);
+                    SetPixel(i,j,mat(i,j),mat(i,j),mat(i,j));
                 }
             }
         }
@@ -37,7 +41,8 @@ public:
     void Save(char *file_name);
     int GetWidth(){return w;}
     int GetHeight(){return h;}
-    Eigen::MatrixXi Threshold(unsigned char r,unsigned char g,unsigned char b);
+    Eigen::MatrixXi Gray();
+    Eigen::MatrixXi Threshold(int l,int r);
     
 private:
     unsigned char *buf;
