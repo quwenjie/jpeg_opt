@@ -3,7 +3,7 @@ project(ippr LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(CXX_FLAGS -fpermissive)
+set(CXX_FLAGS -fpermissive -O3)
 
 include_directories(include)
 
