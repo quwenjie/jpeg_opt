@@ -7,8 +7,8 @@ vector<pair<int,int> >  FindConnectedComponents(Eigen::MatrixXi &mat){
     int n = mat.rows(),m = mat.cols();
     vector<pii> res;
     queue<pii> q;
-    int dx[] = {0,-1,0,1};
-    int dy[] = {-1,0,1,0}; 
+    int dx[] = {0,-1,0,1,-1,1,-1,1};
+    int dy[] = {-1,0,1,0,-1,1,1,-1}; 
     Eigen::MatrixXi used(n,m);
     used.setZero();
 
@@ -20,7 +20,7 @@ vector<pair<int,int> >  FindConnectedComponents(Eigen::MatrixXi &mat){
             while(!q.empty()){
                 auto [x,y] = q.front();
                 q.pop();
-                for(int k = 0;k < 4;k++){
+                for(int k = 0;k < 8;k++){
                     if(x + dx[k] >= 0 && x + dx[k] < n && y + dy[k] >= 0 && y + dy[k] < m && !used(x + dx[k],y + dy[k]) && !mat(x + dx[k],y + dy[k])){
                         q.push(make_pair(x + dx[k],y + dy[k]));
                         used(x + dx[k],y + dy[k]) = 1;
@@ -29,8 +29,9 @@ vector<pair<int,int> >  FindConnectedComponents(Eigen::MatrixXi &mat){
                     }
                 }
             }
-            if(size >= 10 && size < 50000){
+            if(size >= 50 && size < 50000){
                 centre /= size;
+                //cout<<centre[0]<<" "<<centre[1]<<" "<<size<<endl;
                 res.push_back(make_pair(centre[0],centre[1]));
             }
         }
