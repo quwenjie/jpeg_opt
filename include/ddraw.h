@@ -46,6 +46,7 @@ public:
     int GetHeight(){return h;}
     Eigen::MatrixXi Gray();
     Eigen::MatrixXi Threshold(int l,int r);
+    void DrawCross(int x,int y,int k);
     
 private:
     unsigned char *buf;

@@ -118,3 +118,11 @@ Eigen::MatrixXi PixelBuffer::Gray()
     }
     return m; //RVO
 }
+void PixelBuffer::DrawCross(int x,int y,int k){
+    for(int i = x - k;i < x + k;i++){
+        SetPixel(i,y,255,0,0);
+    }
+    for(int i = y - k;i < y + k;i++){
+        SetPixel(x,i,255,0,0);
+    }
+}
