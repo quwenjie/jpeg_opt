@@ -25,7 +25,7 @@ int main()
     auto m = buf2.Threshold(200,255);
 
     cout <<"thresh time "<< time_cost() << endl;
-      
+    
     auto eroded = erode<1>(m); 
     
     cout <<"erode time "<< time_cost() << endl;
