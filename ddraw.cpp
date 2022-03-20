@@ -10,6 +10,30 @@ void PixelBuffer::clear()
 {
     memset(buf,0,w * h * 3);
 }
+PixelBuffer PixelBuffer::downscale_2()
+{
+    PixelBuffer ret(w>>1,h>>1);
+    ret.clear();
+    auto retw=ret.GetWidth();
+    auto reth=ret.GetHeight();
+
+    for(int i = 0;i <retw ;i++)
+    {
+        for(int j = 0;j < reth;j++)
+        {
+            int rsum=0,gsum=0,bsum=0;
+            auto [r1,g1,b1] = GetPixel(i*2,j*2);
+            auto [r2,g2,b2] = GetPixel(i*2+1,j*2);
+            auto [r3,g3,b3] = GetPixel(i*2,j*2+1);
+            auto [r4,g4,b4] = GetPixel(i*2+1,j*2+1);
+            rsum=(int(r1)+r2+r3+r4)>>2;
+            gsum=(int(g1)+g2+g3+g4)>>2;
+            bsum=(int(b1)+b2+b3+b4)>>2;
+            ret.SetPixel(i,j,(unsigned char)rsum,(unsigned char)gsum,(unsigned char)bsum);
+        }
+    }
+    return ret;
+}
 PixelBuffer PixelBuffer::downscale(int K)
 {
     PixelBuffer ret(w/K,h/K);

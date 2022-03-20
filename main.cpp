@@ -13,7 +13,7 @@ int main()
     PixelBuffer buf{"picture/9.jpg"};
 
     cout <<"read time "<<time_cost() << endl;
-    PixelBuffer buf2=buf.downscale(2);
+    PixelBuffer buf2=buf.downscale_2();
     cout <<"downscale time "<<time_cost() << endl;
 
     auto m = buf2.Threshold(200,255);

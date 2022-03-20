@@ -35,6 +35,7 @@ public:
     //PixelBuffer& operator=(const PixelBuffer&) = delete;
     Pixel GetPixel(int x,int y);
     PixelBuffer downscale(int K);
+    PixelBuffer downscale_2();
     void clear();
     char GetR(int x,int y);
     char GetG(int x,int y);
