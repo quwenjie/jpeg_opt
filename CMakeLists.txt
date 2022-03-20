@@ -9,7 +9,7 @@ include_directories(include)
 
 link_directories(lib)
 
-add_executable(ippr jpeg.cpp jpegwrite.cpp ddraw.cpp main.cpp)
+add_executable(ippr jpeg.cpp jpegwrite.cpp ddraw.cpp util.cpp main.cpp)
 
 if(APPLE)
     target_link_libraries(ippr libjpeg_mac.a libturbojpeg_mac.a)

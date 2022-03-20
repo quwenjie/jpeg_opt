@@ -31,9 +31,11 @@ public:
     ~PixelBuffer(){
         delete[] buf;
     }
-    PixelBuffer(const PixelBuffer&) = delete;
-    PixelBuffer& operator=(const PixelBuffer&) = delete;
+    //PixelBuffer(const PixelBuffer&) = delete;
+    //PixelBuffer& operator=(const PixelBuffer&) = delete;
     Pixel GetPixel(int x,int y);
+    PixelBuffer downscale(int K);
+    void clear();
     char GetR(int x,int y);
     char GetG(int x,int y);
     char GetB(int x,int y);

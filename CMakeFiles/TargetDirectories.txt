@@ -1,0 +1,3 @@
+/home/wenjiequ/testjpeg/CMakeFiles/ippr.dir
+/home/wenjiequ/testjpeg/CMakeFiles/edit_cache.dir
+/home/wenjiequ/testjpeg/CMakeFiles/rebuild_cache.dir

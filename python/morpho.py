@@ -54,6 +54,3 @@ for i in range(1,len(centers)):
 
 cv2.putText(result,"count=%d"%(len(centers)-1),(20,30),0,1,(0,255,0),2)
 cv2.imwrite('result.png', result)
-
-cv2.waitKey(0)
-cv2.destroyAllWindows()
