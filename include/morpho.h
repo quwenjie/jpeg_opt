@@ -41,5 +41,5 @@ Eigen::MatrixXi dilate(Eigen::MatrixXi &mat){
     }
     return res;
 }
-
+std::vector<std::pair<int,int> > FindConnectedComponents_white(Eigen::MatrixXi &mat);
 std::vector<std::pair<int,int> > FindConnectedComponents(Eigen::MatrixXi &mat);

@@ -26,6 +26,11 @@ int main()
 
     cout <<"thresh time "<< time_cost() << endl;
     
+    //auto components2 = FindConnectedComponents_white(m);
+
+    //cout <<"find white time "<< time_cost() << endl;
+
+
     auto eroded = erode<1>(m); 
     
     cout <<"erode time "<< time_cost() << endl;
@@ -48,10 +53,15 @@ int main()
 
     
 
-    for(auto [tx,ty] : components)
-    {
-        t.DrawCross(tx,ty,5);
-    }
+    //for(auto [tx,ty] : components)
+    //{
+    //    t.DrawCross(tx,ty,5);
+    //}
+
+    //for(auto [tx,ty] : components2)
+    //{
+    //    t.DrawCross(tx,ty,5);
+    //}
 
     r.Save("123.jpg");  
     t.Save("234.jpg");
