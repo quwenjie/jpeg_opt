@@ -104,9 +104,7 @@ Eigen::MatrixXi FindCorner(Eigen::MatrixXi &m)
     }
 
     fill_from_point(mask,320,240,1);
-    //for(int i = 0;i < N;i++) 
-    //    for(int j = 0;j < M;j++)
-     //       mask(i,j)^=1;   //inner 1 outer 0
+    
     return mask;
 }
 
