@@ -5,6 +5,7 @@
 #include "jpeg.h"
 #include "ddraw.h"
 #include "morpho.h"
+#include "border.h"
 #include "util.h"
 using namespace std;
 
@@ -26,12 +27,12 @@ int main()
 
     cout <<"thresh time "<< time_cost() << endl;
     
-    //auto components2 = FindConnectedComponents_white(m);
+    auto mask=FindCorner(m);
+    
+    Eigen::MatrixXi m2(1-(1-m.array())*mask.array());
+    cout <<"calculate mask time "<< time_cost() << endl;
 
-    //cout <<"find white time "<< time_cost() << endl;
-
-
-    auto eroded = erode<1>(m); 
+    auto eroded = erode<1>(m2); 
     
     cout <<"erode time "<< time_cost() << endl;
 
@@ -42,30 +43,30 @@ int main()
     PixelBuffer t(eroded,true);
 
     //cout <<"convert time2 "<<time_cost()  << endl;
-    //auto d = dilate<1>(eroded);
+    auto d = dilate<1>(eroded);
     //cout << "dilate time "<<time_cost() << endl;
-    //PixelBuffer y(d,true);
-    //cout << "convert time "<<time_cost()  << endl;
+    PixelBuffer y(d,true);
+    cout << "dilate time "<<time_cost()  << endl;
 
-    auto components = FindConnectedComponents(eroded);
+    auto components = FindConnectedComponents(d);
      
     cout << "Connectivity Analysis time " << time_cost() << endl;
 
     
 
-    //for(auto [tx,ty] : components)
-    //{
-    //    t.DrawCross(tx,ty,5);
-    //}
+    for(auto [tx,ty] : components)
+    {
+        y.DrawCross(tx,ty,5);
+    }
 
-    //for(auto [tx,ty] : components2)
-    //{
-    //    t.DrawCross(tx,ty,5);
-    //}
+    PixelBuffer masks(mask,true);
+    PixelBuffer filtered(m2,true);
+    r.Save("thresh.jpg");  
+    t.Save("erode.jpg");
+    masks.Save("mask.jpg");
+    filtered.Save("afterfilter.jpg");
 
-    r.Save("123.jpg");  
-    t.Save("234.jpg");
-   // y.Save("345.jpg");
+    y.Save("recog.jpg");
     
     return 0;
 }

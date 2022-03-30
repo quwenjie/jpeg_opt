@@ -1,7 +1,7 @@
 #include "morpho.h"
 #include <iostream>
 using namespace std;
-
+Eigen::MatrixXi used(640,480);
 vector<pair<int,int> >  FindConnectedComponents(Eigen::MatrixXi &mat){
     using pii = pair<int,int>;
     int n = mat.rows(),m = mat.cols();
@@ -9,7 +9,7 @@ vector<pair<int,int> >  FindConnectedComponents(Eigen::MatrixXi &mat){
     queue<pii> q;
     int dx[] = {0,-1,0,1,-1,1,-1,1};
     int dy[] = {-1,0,1,0,-1,1,1,-1}; 
-    Eigen::MatrixXi used(n,m);
+    
     used.setZero();
 
     for(int i = 0;i < n;i++) for(int j = 0;j < m;j++){
@@ -39,14 +39,13 @@ vector<pair<int,int> >  FindConnectedComponents(Eigen::MatrixXi &mat){
     return res;
 }
 
-vector<pair<int,int> >  FindConnectedComponents_white(Eigen::MatrixXi &mat){
+vector<pair<int,int> >  FindConnectedComponents_white(Eigen::MatrixXi &mat)
+{
     using pii = pair<int,int>;
     int n = mat.rows(),m = mat.cols();
     vector<pii> res;
-    //queue<pii> q;
     int dx[] = {0,-1,0,1,-1,1,-1,1};
     int dy[] = {-1,0,1,0,-1,1,1,-1}; 
-    Eigen::MatrixXi used(n,m);
     used.setZero();
     pair<int,int>* q=new pii[(int)2e5];
     
