@@ -4,8 +4,8 @@
 #include <queue>
 #include <vector>
 #include <utility>
-
-
+using namespace std;
+using pii = pair<int,int>;
 template<int kerSize>
 Eigen::MatrixXi erode(Eigen::MatrixXi &mat){
     int w = mat.rows();
@@ -41,5 +41,5 @@ Eigen::MatrixXi dilate(Eigen::MatrixXi &mat){
     }
     return res;
 }
-std::vector<std::pair<int,int> > FindConnectedComponents_white(Eigen::MatrixXi &mat);
-std::vector<std::pair<int,int> > FindConnectedComponents(Eigen::MatrixXi &mat);
+
+vector<vector<pii> > FindConnectedComponents(Eigen::MatrixXi &mat);

@@ -118,11 +118,54 @@ Eigen::MatrixXi PixelBuffer::Gray()
     }
     return m; //RVO
 }
-void PixelBuffer::DrawCross(int x,int y,int k){
+void PixelBuffer::DrawCross(int x,int y,int k,unsigned char r,unsigned char g,unsigned char b)
+{
     for(int i = x - k;i < x + k;i++){
-        SetPixel(i,y,255,0,0);
+        SetPixel(i,y,r,g,b);
     }
     for(int i = y - k;i < y + k;i++){
-        SetPixel(x,i,255,0,0);
+        SetPixel(x,i,r,g,b);
     }
+}
+
+void PixelBuffer::Line(int x1, int y1, int x2, int y2,unsigned char rr,unsigned char gg,unsigned char bb)
+{
+	int x = x1, y = y1;
+	int a = y1 - y2, b = x2 - x1;
+	int cx = (b >= 0 ? 1 : (b = -b, -1));
+	int cy = (a <= 0 ? 1 : (a = -a, -1));
+
+	int d, d1, d2;
+	if (-a <= b)		// 斜率绝对值 <= 1
+	{
+		d = 2 * a + b;
+		d1 = 2 * a;
+		d2 = 2 * (a + b);
+		while(x != x2)
+		{
+			SetPixel(x,y,rr,gg,bb);
+
+			if (d < 0)
+				y += cy, d += d2;
+			else
+				d += d1;
+			x += cx;
+		}
+	}
+	else				// 斜率绝对值 > 1
+	{
+		d = 2 * b + a; 
+		d1 = 2 * b;
+		d2 = 2 * (a + b);
+		while(y != y2) 
+		{ 
+			SetPixel(x,y,rr,gg,bb);
+
+			if(d < 0)
+				d += d1; 
+			else 
+				x += cx, d += d2; 
+			y += cy; 
+		} 
+	}
 }

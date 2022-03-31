@@ -7,6 +7,8 @@
 #include "morpho.h"
 #include "border.h"
 #include "util.h"
+#include "pca.h"
+#include <cmath>
 using namespace std;
 
 double time_cost();
@@ -54,11 +56,17 @@ int main()
 
     
 
-    for(auto [tx,ty] : components)
+    for(auto vec : components)
     {
-        y.DrawCross(tx,ty,5);
+        auto ret=PCA_angle(vec);
+        double center_x=ret[0];
+        double center_y=ret[1];
+        double ang=ret[2];
+        y.Line(int(center_x-50*cos(ang)),int(center_y-50*sin(ang)),int(center_x+50*cos(ang)),int(center_y+50*sin(ang)));
+        y.DrawCross(int(center_x),int(center_y),5);
     }
-
+    
+    
     PixelBuffer masks(mask,true);
     PixelBuffer filtered(m2,true);
     r.Save("thresh.jpg");  
