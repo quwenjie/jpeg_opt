@@ -97,7 +97,7 @@ Eigen::MatrixXi FindCorner(Eigen::MatrixXi &m)
     {
         for(int j=i+1;j<4;j++)
         {
-            if(abs(ret[i].first-ret[j].first)>50 && abs(ret[i].second-ret[j].second)>50) //not neighbor corner
+            if(abs(ret[i].first-ret[j].first)>100 && abs(ret[i].second-ret[j].second)>100) //not neighbor corner
                 continue;
             Line_Midpoint(mask,ret[i].first,ret[i].second,ret[j].first,ret[j].second,1);
         }

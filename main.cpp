@@ -25,7 +25,7 @@ int main()
     PixelBuffer buf2=buf.downscale(2);
     cout <<"downscale time "<<time_cost() << endl;
 
-    auto m = buf2.Threshold(200,255);
+    auto m = buf2.Threshold(215,255);
 
     cout <<"thresh time "<< time_cost() << endl;
     
@@ -45,12 +45,14 @@ int main()
     PixelBuffer t(eroded,true);
 
     //cout <<"convert time2 "<<time_cost()  << endl;
-    auto d = dilate<1>(eroded);
+    //auto d = dilate<1>(eroded);
     //cout << "dilate time "<<time_cost() << endl;
-    PixelBuffer y(d,true);
+
+
+    PixelBuffer y(eroded,true);
     cout << "dilate time "<<time_cost()  << endl;
 
-    auto components = FindConnectedComponents(d);
+    auto components = FindConnectedComponents(eroded);
      
     cout << "Connectivity Analysis time " << time_cost() << endl;
 
@@ -65,7 +67,7 @@ int main()
         y.Line(int(center_x-50*cos(ang)),int(center_y-50*sin(ang)),int(center_x+50*cos(ang)),int(center_y+50*sin(ang)));
         y.DrawCross(int(center_x),int(center_y),5);
     }
-    
+    cout << "PCA time " << time_cost() << endl;
     
     PixelBuffer masks(mask,true);
     PixelBuffer filtered(m2,true);
