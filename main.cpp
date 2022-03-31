@@ -8,6 +8,7 @@
 #include "border.h"
 #include "util.h"
 #include "pca.h"
+#include "feature.h"
 #include <cmath>
 using namespace std;
 
@@ -61,11 +62,25 @@ int main()
     for(auto vec : components)
     {
         auto ret=PCA_angle(vec);
+        
         double center_x=ret[0];
         double center_y=ret[1];
         double ang=ret[2];
         y.Line(int(center_x-50*cos(ang)),int(center_y-50*sin(ang)),int(center_x+50*cos(ang)),int(center_y+50*sin(ang)));
         y.DrawCross(int(center_x),int(center_y),5);
+
+        auto rotated=logical_rotate(vec,-ang);
+        double xmin=1e9,ymin=1e9,xmax=-1e5,ymax=-1e5;
+        for(auto [x,y] : rotated)
+        {
+            xmin=min(x,xmin);
+            ymin=min(y,ymin);
+            xmax=max(x,xmax);
+            ymax=max(y,ymax);
+        }
+        double S=vec.size();
+        double rectS=(xmax-xmin)*(ymax-ymin);
+        cout<<"Positon: "<<center_x<<" "<<center_y<<" Rectangle "<<xmax-xmin<<" "<<ymax-ymin<<" "<<"ratio "<<S/rectS<<endl;
     }
     cout << "PCA time " << time_cost() << endl;
     
