@@ -1,11 +1,22 @@
 #include "pca.h"
-vector<double> PCA_angle(vector<pii> vec)
+
+
+using namespace std;
+using pii = pair<int,int>;
+
+
+pair<vector<double>,vector<int>> PCA_angle(vector<pii> &vec)
 {
     double center_x = 0, center_y = 0;
+    int mn_x = 1e9,mx_x = -1e9,mn_y = 1e9,mx_y = -1e9;
     for (auto [x, y] : vec)
     {
         center_x += x;
         center_y += y;
+        mn_x=min(x,mn_x);
+        mn_y=min(y,mn_y);
+        mx_x=max(x,mx_x);
+        mx_y=max(y,mx_y);
     }
     center_x /= vec.size();
     center_y /= vec.size();
@@ -33,6 +44,7 @@ vector<double> PCA_angle(vector<pii> vec)
     ret.push_back(center_x);
     ret.push_back(center_y);
     ret.push_back(ang);
-    return ret;
+    vector<int> t = {mn_x,mx_x,mn_y,mx_y};
+    return {ret,t};
 }
 // cout<<center_x<<" "<<center_y<<" "<<vec.size()<<" "<<ang<<endl;

@@ -9,18 +9,20 @@
 #include "util.h"
 #include "pca.h"
 #include "feature.h"
+#include "dicision.h"
 #include <cmath>
 using namespace std;
 
 double time_cost();
 
-int main()
+int main(int argc,char **argv)
 {
-    char fn[20];
-    cout<<"Enter filename!"<<endl;
-    cin>>fn;
+    if(argc != 2){
+        cout << "Usage: ippr [photo name] " << endl;
+        return 0;
+    }
 
-    PixelBuffer buf{fn};
+    PixelBuffer buf{argv[1]};
     cout <<"read time "<< time_cost() << endl;
 
     PixelBuffer buf2=buf.downscale(2);
@@ -59,19 +61,20 @@ int main()
 
     
 
-    for(auto vec : components)
+    for(auto &vec : components)
     {
-        auto ret=PCA_angle(vec);
+        auto [ret,ori_bound] = PCA_angle(vec);
         
         double center_x=ret[0];
         double center_y=ret[1];
         double ang=ret[2];
+        int mn_x = ori_bound[0],mx_x = ori_bound[1],mn_y = ori_bound[2],mx_y = ori_bound[3];
         y.Line(int(center_x-50*cos(ang)),int(center_y-50*sin(ang)),int(center_x+50*cos(ang)),int(center_y+50*sin(ang)));
         y.DrawCross(int(center_x),int(center_y),5);
 
         auto rotated=logical_rotate(vec,-ang);
         double xmin=1e9,ymin=1e9,xmax=-1e5,ymax=-1e5;
-        for(auto [x,y] : rotated)
+        for(auto &[x,y] : rotated)
         {
             xmin=min(x,xmin);
             ymin=min(y,ymin);
@@ -80,7 +83,16 @@ int main()
         }
         double S=vec.size();
         double rectS=(xmax-xmin)*(ymax-ymin);
-        cout<<"Positon: "<<center_x<<" "<<center_y<<" Rectangle "<<xmax-xmin<<" "<<ymax-ymin<<" "<<"ratio "<<S/rectS<<endl;
+        auto compType = judge(S,rectS);
+        printf("Position: %lf %lf Rectangle: %lf %lf Size: %lf RectSize: %lf Ratio: %lf %s\n",center_x,center_y,xmax-xmin,ymax-ymin,S,rectS,S/rectS,ComponentsTypeName[compType].c_str());
+        
+        y.Line(mn_x,mn_y,mx_x,mn_y,ComponentsColor[compType]);
+        y.Line(mn_x,mn_y,mn_x,mx_y,ComponentsColor[compType]);
+        y.Line(mn_x,mx_y,mx_x,mx_y,ComponentsColor[compType]);
+        y.Line(mx_x,mn_y,mx_x,mx_y,ComponentsColor[compType]);
+        
+        //cout<<"Positon: "<<center_x<<" "<<center_y<<" Rectangle "<<xmax-xmin<<" "<<ymax-ymin<<" "<<"ratio "<<S/rectS<<endl;
+    
     }
     cout << "PCA time " << time_cost() << endl;
     
@@ -93,8 +105,6 @@ int main()
 
     y.Save("recog.jpg");
     
-    y.TextGB32(50,50,15,make_tuple(255,0,0),"你好");
-    y.Save("text.jpg");
 
     return 0;
 }

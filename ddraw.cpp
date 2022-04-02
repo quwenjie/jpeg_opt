@@ -177,3 +177,8 @@ void PixelBuffer::Line(int x1, int y1, int x2, int y2,unsigned char rr,unsigned 
 		} 
 	}
 }
+
+void PixelBuffer::Line(int x1, int y1, int x2, int y2,Pixel c){
+    auto [rr,gg,bb] = c;
+    Line(x1,y1,x2,y2,rr,gg,bb);
+}

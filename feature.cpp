@@ -1,5 +1,11 @@
 #include "feature.h"
-vector<pff> logical_rotate(vector<pii> v,double ang)  //rotate ANG
+
+using namespace std;
+using pii = pair<int,int>;
+using pff = pair<double,double>;
+
+
+vector<pff> logical_rotate(vector<pii> &v,double ang)  //rotate ANG
 {
     double si=sin(ang),cs=cos(ang);
     vector<pff> ret;
