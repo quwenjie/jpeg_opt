@@ -81,6 +81,14 @@ void PixelBuffer::SetPixel(int x,int y,unsigned char r,unsigned char g,unsigned 
     buf[3*pos+1]=g;
     buf[3*pos+2]=b;
 }
+void PixelBuffer::SetPixel(int x,int y,Pixel c)
+{
+    int pos=w*y+x;
+    auto [r,g,b] = c;
+    buf[3*pos]=r;
+    buf[3*pos+1]=g;
+    buf[3*pos+2]=b;
+}
 void PixelBuffer::Save(char *file_name){
     write_JPEG_file(file_name,(char*)buf, w,h);
 }

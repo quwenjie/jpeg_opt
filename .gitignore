@@ -4,3 +4,5 @@ build/
 picture/
 *.jpg
 CMakeFiles/
+*.cmake
+Makefile

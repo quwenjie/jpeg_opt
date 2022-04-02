@@ -1,4 +1,3 @@
-#include <bits/stdc++.h>
 #include "border.h"
 using namespace std;
 // 使用中点算法画任意斜率的直线（包括起始点，不包括终止点）

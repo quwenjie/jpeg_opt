@@ -41,6 +41,7 @@ public:
     char GetG(int x,int y);
     char GetB(int x,int y);
     void SetPixel(int x,int y,unsigned char r,unsigned char g,unsigned char b);
+    void SetPixel(int x,int y,Pixel c);
     void Save(char *file_name);
     int GetWidth(){return w;}
     int GetHeight(){return h;}
@@ -48,7 +49,7 @@ public:
     Eigen::MatrixXi Threshold(int l,int r);
     void DrawCross(int x,int y,int k,unsigned char r=255,unsigned char g=0,unsigned char b=0);
     void Line(int x1, int y1, int x2, int y2,unsigned char r=0,unsigned char g=255,unsigned char b=0);
-    
+    //void DrawLine(int x1, int y1, int x2, int y2,int width,Pixel c);
 private:
     unsigned char *buf;
     int w,h;

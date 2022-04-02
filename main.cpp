@@ -93,5 +93,8 @@ int main()
 
     y.Save("recog.jpg");
     
+    y.TextGB32(50,50,15,make_tuple(255,0,0),"你好");
+    y.Save("text.jpg");
+
     return 0;
 }

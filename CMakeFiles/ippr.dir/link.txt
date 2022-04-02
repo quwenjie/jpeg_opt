@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/ippr.dir/jpeg.cpp.o CMakeFiles/ippr.dir/jpegwrite.cpp.o CMakeFiles/ippr.dir/ddraw.cpp.o CMakeFiles/ippr.dir/util.cpp.o CMakeFiles/ippr.dir/morpho.cpp.o CMakeFiles/ippr.dir/main.cpp.o -o ippr   -L/home/wenjiequ/testjpeg/lib  -Wl,-rpath,/home/wenjiequ/testjpeg/lib -Wl,-Bstatic -ljpeg_linux -lturbojpeg_linux -Wl,-Bdynamic 
