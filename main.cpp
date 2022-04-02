@@ -83,7 +83,8 @@ int main(int argc,char **argv)
         }
         double S=vec.size();
         double rectS=(xmax-xmin)*(ymax-ymin);
-        auto compType = judge(S,rectS,xmax-xmin,ymax-ymin);
+        bool isNail = judge_nail(rotated,xmax,xmin);
+        auto compType = judge(S,rectS,xmax-xmin,ymax-ymin,isNail);
         printf("Position: %lf %lf Rectangle: %lf %lf Size: %lf RectSize: %lf Ratio: %lf %s\n",center_x,center_y,xmax-xmin,ymax-ymin,S,rectS,S/rectS,ComponentsTypeName[compType].c_str());
         
         y.Line(mn_x,mn_y,mx_x,mn_y,ComponentsColor[compType]);

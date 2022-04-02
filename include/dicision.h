@@ -34,7 +34,7 @@ PixelBuffer::Pixel ComponentsColor[] = {
     {127,127,127}, // unknownSquare
 };
 
-ComponentsType judge(double size, double boxSize,double width,double height) //width>height
+ComponentsType judge(double size, double boxSize,double width,double height,bool isNail) //width>height
 {
     double ratio = size / boxSize;
     if(width<1.15*height)
@@ -55,6 +55,9 @@ ComponentsType judge(double size, double boxSize,double width,double height) //w
     }
     if (ratio > 0.45 && ratio < 0.6)
     {
+        if(isNail){
+            return ComponentsType::Nail;
+        }
         return ComponentsType::Screw;
     }
     if (ratio > 0.3 && ratio < 0.4)
@@ -65,6 +68,9 @@ ComponentsType judge(double size, double boxSize,double width,double height) //w
     if (ratio < 0.2 && size > 2000)
     {
         return ComponentsType::Wrench;
+    }
+    if(isNail){
+        return ComponentsType::Nail;
     }
     return ComponentsType::Unknown;
 }

@@ -3,10 +3,5 @@
 #include <vector>
 #include <cmath>
 
-
-using namespace std;
-using pii = pair<int,int>;
-using pff = pair<double,double>;
-
-
-vector<pff> logical_rotate(vector<pii> &v,double ang); //rotate logical pixels
+std::vector<std::pair<double,double>> logical_rotate(std::vector<std::pair<int,int>> &v,double ang); //rotate logical pixels
+bool judge_nail(std::vector<std::pair<double,double>> &a,double maxX,double minX,bool hard = false);
