@@ -99,7 +99,7 @@ int main(int argc,char **argv)
     PixelBuffer filtered(m2,true);
     r.Save("thresh.jpg");  
     t.Save("erode.jpg");
-    masks.Save("mask.jpg");
+    masks.Save("maskx.jpg");
     filtered.Save("afterfilter.jpg");
     
     y.Save("recog.jpg");
