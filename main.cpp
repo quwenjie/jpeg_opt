@@ -45,43 +45,30 @@ int main(int argc,char **argv)
 
     cout <<"convert time "<<time_cost() << endl;
 
-    
-
-    //cout <<"convert time2 "<<time_cost()  << endl;
-    //auto d = dilate<1>(eroded);
-    //cout << "dilate time "<<time_cost() << endl;
-
-
-    PixelBuffer y(eroded,true);
-    cout << "dilate time "<<time_cost()  << endl;
-
     vector<vector<pii> > components = FindConnectedComponents(eroded);
     vector<vector<pii> > components2 = FindConnectedComponents(m2);
      
     cout << "Connectivity Analysis time " << time_cost() << endl;
-
-    
     if( components.size()==components2.size()) //use before eroded
     {
-        cout<<"use before eroded"<<endl;
         eroded=m2;
         components=components2;
     }
+    PixelBuffer y(eroded,true);
     PixelBuffer t(eroded,true);
+    cout << "convert time " << time_cost() << endl;
     int id=0;
     for(auto &vec : components)
     {
         auto [ret,ori_bound] = PCA_angle(vec);
-        cout<<"pca"<<endl;
+        
         double center_x=ret[0];
         double center_y=ret[1];
         double ang=ret[2];
         int mn_x = ori_bound[0],mx_x = ori_bound[1],mn_y = ori_bound[2],mx_y = ori_bound[3];
         y.Line(int(center_x-50*cos(ang)),int(center_y-50*sin(ang)),int(center_x+50*cos(ang)),int(center_y+50*sin(ang)));
         y.DrawCross(int(center_x),int(center_y),5);
-        //cout<<"draw"<<endl;
         auto rotated=logical_rotate(vec,-ang);
-        //cout<<"rotate"<<endl;
         double xmin=1e9,ymin=1e9,xmax=-1e5,ymax=-1e5;
         for(auto &[x,y] : rotated)
         {
@@ -94,7 +81,7 @@ int main(int argc,char **argv)
         double rectS=(xmax-xmin)*(ymax-ymin);
         bool isNail = judge_nail(rotated,xmax,xmin);
         auto compType = judge(S,rectS,xmax-xmin,ymax-ymin,isNail);
-        printf("%d Position: %lf %lf Rectangle: %lf %lf Size: %lf RectSize: %lf Ratio: %lf %s\n",id,center_x,center_y,xmax-xmin,ymax-ymin,S,rectS,S/rectS,ComponentsTypeName[compType].c_str());
+        printf("%d Position: %lf %lf Angle: %lf Rectangle: %lf %lf Size: %lf RectSize: %lf Ratio: %lf %s\n",id,center_x,center_y,ang*180/3.141593,xmax-xmin,ymax-ymin,S,rectS,S/rectS,ComponentsTypeName[compType].c_str());
         char tmp[100];
         sprintf(tmp,"%d,%s",id,ComponentsTypeName[compType].c_str());
         y.DrawASCII(mn_x,mn_y-14,tmp);
@@ -106,7 +93,7 @@ int main(int argc,char **argv)
         //cout<<"Positon: "<<center_x<<" "<<center_y<<" Rectangle "<<xmax-xmin<<" "<<ymax-ymin<<" "<<"ratio "<<S/rectS<<endl;
         id++;
     }
-    cout << "PCA time " << time_cost() << endl;
+    cout << "PCA+Recog time " << time_cost() << endl;
     
     PixelBuffer masks(mask,true);
     PixelBuffer filtered(m2,true);

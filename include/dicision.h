@@ -21,7 +21,7 @@ std::string ComponentsTypeName[] = {
     "Box",
     "Wrench",
     "Unknown",
-    "UnknownSquare"
+    "UnkSquare"
 };
 PixelBuffer::Pixel ComponentsColor[] = {
     {255,0,0}, // coin
@@ -47,21 +47,25 @@ ComponentsType judge(double size, double boxSize,double width,double height,bool
         {
             return ComponentsType::Coin;
         }
-        if (ratio > 0.2 && ratio < 0.3 && size < 500)
+        if (ratio <0.5 && width<35)
         {
             return ComponentsType::Nut;
         }
         return ComponentsType::UnknownSquare;
     }
-    if (ratio > 0.45 && ratio < 0.6)
+
+    if (ratio > 0.45 && ratio < 0.7)
     {
-        if(isNail){
+        if(isNail)
+        {
+            //cout<<"IsNail0.45-0.6"<<endl;
             return ComponentsType::Nail;
         }
         return ComponentsType::Screw;
     }
     if (ratio > 0.3 && ratio < 0.4)
     {
+        cout<<"IsNail0.3-0.4"<<endl;
         return ComponentsType::Nail;
     }
     
@@ -69,7 +73,9 @@ ComponentsType judge(double size, double boxSize,double width,double height,bool
     {
         return ComponentsType::Wrench;
     }
-    if(isNail){
+    if(isNail)
+    {
+        cout<<"IsNail"<<endl;
         return ComponentsType::Nail;
     }
     return ComponentsType::Unknown;
