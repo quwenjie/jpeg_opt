@@ -66,7 +66,7 @@ void  fill_from_point(Eigen::MatrixXi &mat,int sx,int sy,int col)
             {
                 q.push(make_pair(x + dx[k],y + dy[k]));
                 mat(x + dx[k],y + dy[k]) = col;
-                cout<<x+dx[k]<<" "<<y+dy[k]<<" "<<mat(x + dx[k],y + dy[k])<<endl;
+                //cout<<x+dx[k]<<" "<<y+dy[k]<<" "<<mat(x + dx[k],y + dy[k])<<endl;
                 
             }
         }

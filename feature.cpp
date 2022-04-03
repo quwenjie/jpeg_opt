@@ -28,7 +28,7 @@ void reverse(double a[],int cnt){
 }
 bool judge_nail(vector<pff> &rotated,double maxX,double minX,bool hard){
     const int num_pieces = 10;
-    double piece_cnt[num_pieces] = {0};
+    double piece_cnt[num_pieces + 10] = {0};
     const double sp = (maxX - minX)/ num_pieces;
     for(auto [x,y] : rotated)
     {
