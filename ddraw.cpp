@@ -147,7 +147,7 @@ void PixelBuffer::DrawASCII(int x,int y,const char *s,unsigned char r,unsigned c
 	char mat[288];
 	char eng[2] = "E";
 	char fn[30];
-	sprintf(fn, "../ASC%d", fontsize);
+	sprintf(fn, "ASC%d", fontsize);
 	hzk_p=fopen(fn, "rb");           
 	if (hzk_p == NULL)
 		exit(-1);
