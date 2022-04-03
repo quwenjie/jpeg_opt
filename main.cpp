@@ -33,8 +33,9 @@ int main(int argc,char **argv)
     cout <<"thresh time "<< time_cost() << endl;
     
     auto mask=FindCorner(m);
-    
+    mask=erode<1>(mask);
     Eigen::MatrixXi m2(1-(1-m.array())*mask.array());
+
     cout <<"calculate mask time "<< time_cost() << endl;
 
     auto eroded = erode<1>(m2); 
