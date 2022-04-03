@@ -66,11 +66,11 @@ int main(int argc,char **argv)
     vector<vector<pii> > components2 = FindConnectedComponents(m2);
      
     cout << "Connectivity Analysis time " << time_cost() << endl;
-    if( components.size()==components2.size()) //use before eroded
-    {
-        eroded=m2;
-        components=components2;
-    }
+    //if( components.size()==components2.size()) //use before eroded
+    //{
+    //    eroded=m2;
+    //    components=components2;
+    //}
     PixelBuffer y(eroded,true);
     PixelBuffer t(eroded,true);
     cout << "convert time " << time_cost() << endl;
