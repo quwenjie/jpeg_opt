@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 using namespace std;
-
+//extern const char font_en[][72];
 PixelBuffer::Pixel PixelBuffer::GetPixel(int x,int y){
     return make_tuple(buf[3*(w*y+x)],buf[3*(w*y+x)+1],buf[3*(w*y+x)+2]);
 }
@@ -135,7 +135,55 @@ void PixelBuffer::DrawCross(int x,int y,int k,unsigned char r,unsigned char g,un
         SetPixel(x,i,r,g,b);
     }
 }
+void PixelBuffer::DrawASCII(int x,int y,const char *s,unsigned char r,unsigned char g,unsigned char b)
+{
+	FILE* hzk_p = NULL;       
+    int fontsize=16;                              
+	unsigned char quma, weima;               
+	unsigned long offset;                         
+	unsigned char mask[] = { 0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01 }; 
+	int i, j, pos, y0 = y;
 
+	char mat[288];
+	char eng[2] = "E";
+	char fn[30];
+	sprintf(fn, "../ASC%d", fontsize);
+	hzk_p=fopen(fn, "rb");           
+	if (hzk_p == NULL)
+		exit(-1);
+	long fsize=fontsize * fontsize / 8L;
+
+	while (*s != NULL)
+	{
+		while ( (*s != NULL))
+		{
+			y = y0;
+			if (s[0] >= 0)
+			{
+				eng[0] = s[0];
+                offset = fontsize*fontsize/2/8  *  (int)s[0] ;
+                fseek(hzk_p, offset, SEEK_SET);
+                fread(mat, fsize/2, 1, hzk_p); 
+				int byte=0;
+				for (i = 0; i < fontsize; i++)
+				{
+					for (j = 0; j < fontsize/2; j++)   
+					{
+						if (( mat[byte]>> (7 - j))&1)   
+							SetPixel(x + j, y, r,g,b);
+                        
+					}
+                    byte++;
+					y++;
+				}
+				s += 1;
+				x += 10;				
+			}
+		}
+	}
+	fclose(hzk_p);
+
+}
 void PixelBuffer::Line(int x1, int y1, int x2, int y2,unsigned char rr,unsigned char gg,unsigned char bb)
 {
 	int x = x1, y = y1;

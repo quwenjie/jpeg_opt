@@ -4,7 +4,8 @@
 #include "jpeg.h"
 #include "Eigen/Dense"
 
-class PixelBuffer{
+class PixelBuffer
+{
 public:
     typedef std::tuple<unsigned char,unsigned char,unsigned char> Pixel;
     PixelBuffer(char *file_name){
@@ -50,6 +51,7 @@ public:
     void DrawCross(int x,int y,int k,unsigned char r=255,unsigned char g=0,unsigned char b=0);
     void Line(int x1, int y1, int x2, int y2,unsigned char r=0,unsigned char g=255,unsigned char b=0);
     void Line(int x1, int y1, int x2, int y2,Pixel c);
+    void DrawASCII(int x,int y,const char *s,unsigned char r=255,unsigned char g=0,unsigned char b=0);
 private:
     unsigned char *buf;
     int w,h;

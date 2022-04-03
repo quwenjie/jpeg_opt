@@ -5,18 +5,21 @@ using pii = pair<int,int>;
 using pff = pair<double,double>;
 
 
-vector<pff> logical_rotate(vector<pii> &v,double ang)  //rotate ANG
+vector<pff> logical_rotate(vector<pii>& v,double ang)  //rotate ANG
 {
     double si=sin(ang),cs=cos(ang);
-    vector<pff> ret;
+    vector<pff> retx;
+    retx.reserve(10000);
+    double xx,yy;
     for(auto [x,y] : v)
     {
-        double xx,yy;
         xx=cs*x-si*y;
         yy=si*x+cs*y;
-        ret.push_back(make_pair(xx,yy));
+        //cout<<xx<<" "<<yy<<endl;
+        retx.push_back(make_pair(xx,yy));
     }
-    return ret;
+    cout<<"end rotate"<<endl;
+    return retx;
 }
 
 bool judge_nail(vector<pff> &rotated,double maxX,double minX,bool hard){
