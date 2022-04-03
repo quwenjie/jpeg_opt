@@ -17,23 +17,39 @@ double time_cost();
 
 int main(int argc,char **argv)
 {
-    if(argc != 2){
-        cout << "Usage: ippr [photo name] " << endl;
+    Eigen::MatrixXi m;
+    if(argc >4 || argc<=2)
+    {
+        cout << "Usage: ippr [photo name] [mode] [(optional)]" << endl;
         return 0;
     }
+    int thr=215;
+    if(argc==4)
+    {
+        sscanf(argv[3],"%d",&thr);
+    }
+    if (!strcmp(argv[2],"1"))
+    {
+        PixelBuffer buf{argv[1]};
+        cout <<"read time "<< time_cost() << endl;
 
-    PixelBuffer buf{argv[1]};
-    cout <<"read time "<< time_cost() << endl;
+        PixelBuffer buf2=buf.downscale(2);
+        cout <<"downscale time "<<time_cost() << endl;
 
-    PixelBuffer buf2=buf.downscale(2);
-    cout <<"downscale time "<<time_cost() << endl;
+        m = buf2.Threshold(thr,255);
+    }
+    else
+    {
+        PixelBuffer bufx{argv[1]};
+        cout <<"load time "<<time_cost() << endl;
 
-    auto m = buf2.Threshold(215,255);
+        m = bufx.Threshold(thr,255);
+    }
 
     cout <<"thresh time "<< time_cost() << endl;
     
     auto mask=FindCorner(m);
-    mask=erode<1>(mask);
+    mask=dilate<1>(mask);
     Eigen::MatrixXi m2(1-(1-m.array())*mask.array());
 
     cout <<"calculate mask time "<< time_cost() << endl;
@@ -98,7 +114,7 @@ int main(int argc,char **argv)
     
     PixelBuffer masks(mask,true);
     PixelBuffer filtered(m2,true);
-    r.Save("thresh.jpg");  
+    r.Save("thresh_out.jpg");  
     t.Save("erode.jpg");
     masks.Save("mask.jpg");
     filtered.Save("afterfilter.jpg");
