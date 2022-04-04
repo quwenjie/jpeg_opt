@@ -27,7 +27,7 @@ PixelBuffer::Pixel ComponentsColor[] = {
     {255,0,0}, // coin
     {0,255,0}, // nail
     {0,0,255}, // nut
-    {255,255,0}, // screw
+    {0,0,0}, // screw
     {255,0,255}, // box
     {0,255,255}, // wrench
     {255,255,255}, // unknown
@@ -47,7 +47,7 @@ ComponentsType judge(double size, double boxSize,double width,double height,bool
         {
             return ComponentsType::Coin;
         }
-        if (ratio <0.5 && width<35)
+        if (width<40)
         {
             return ComponentsType::Nut;
         }

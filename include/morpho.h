@@ -43,3 +43,5 @@ Eigen::MatrixXi dilate(Eigen::MatrixXi &mat){
 }
 
 vector<vector<pii> > FindConnectedComponents(Eigen::MatrixXi &mat);
+Eigen::MatrixXi fix_white(Eigen::MatrixXi &mat);
+pair<vector<vector<pii> >,Eigen::MatrixXi> ErodedGrow(Eigen::MatrixXi &mat,Eigen::MatrixXi &eroded);

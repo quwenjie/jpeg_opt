@@ -18,25 +18,29 @@ double time_cost();
 int main(int argc,char **argv)
 {
     Eigen::MatrixXi m;
-    if(argc >4 || argc<=2)
+    PixelBuffer y(1280,960);
+    if(argc >3 || argc==1)
     {
-        cout << "Usage: ippr [photo name] [mode] [(optional)]" << endl;
+        cout << "Usage: ippr [photo name]  [(optional)]" << endl;
         return 0;
     }
     int thr=215;
-    if(argc==4)
-    {
-        sscanf(argv[3],"%d",&thr);
-    }
+    if(argc==3)
+        sscanf(argv[2],"%d",&thr);
+    /*
     if (!strcmp(argv[2],"1"))
     {
+        */
         PixelBuffer buf{argv[1]};
+        
         cout <<"read time "<< time_cost() << endl;
 
         PixelBuffer buf2=buf.downscale(2);
+        memcpy(y.GetBuffer(),buf.GetBuffer(),y.GetWidth()*y.GetHeight()*3);
         cout <<"downscale time "<<time_cost() << endl;
 
         m = buf2.Threshold(thr,255);
+    /*
     }
     else
     {
@@ -45,46 +49,52 @@ int main(int argc,char **argv)
 
         m = bufx.Threshold(thr,255);
     }
-
+    */
     cout <<"thresh time "<< time_cost() << endl;
-    
+    vector<vector<pii> > components;
     auto mask=FindCorner(m);
     mask=dilate<1>(mask);
-    Eigen::MatrixXi m2(1-(1-m.array())*mask.array());
+    Eigen::MatrixXi m2(1-(1-m.array())*mask.array()),eroded;
 
     cout <<"calculate mask time "<< time_cost() << endl;
-
-    auto eroded = erode<1>(m2); 
-    
-    cout <<"erode time "<< time_cost() << endl;
-
-    PixelBuffer r(m,true);
-
-    cout <<"convert time "<<time_cost() << endl;
-
-    vector<vector<pii> > components = FindConnectedComponents(eroded);
-    vector<vector<pii> > components2 = FindConnectedComponents(m2);
-     
-    cout << "Connectivity Analysis time " << time_cost() << endl;
-    //if( components.size()==components2.size()) //use before eroded
-    //{
-    //    eroded=m2;
-    //    components=components2;
-    //}
-    PixelBuffer y(eroded,true);
-    PixelBuffer t(eroded,true);
-    cout << "convert time " << time_cost() << endl;
-    int id=0;
-    for(auto &vec : components)
+    /*
+    if (!strcmp(argv[2],"3"))  //use old
     {
+        cout<<"classical segment"<<endl;
+        eroded = erode<1>(m2); 
+        components=FindConnectedComponents(eroded);
+    }
+    else
+    {
+        */
+        auto m3=fix_white(m2);
+
+        eroded = erode<2>(m3); 
+    
+        cout <<"fix white+ erode time "<< time_cost() << endl;
+
+        auto [components_,seg] = ErodedGrow(m3,eroded);
+        components=components_;
+    //}
+
+    cout << components.size()<<" Connectivity Analysis time " << time_cost() << endl;
+    //PixelBuffer y(org,true);
+
+    PixelBuffer t(eroded,true);
+    
+    int id=0;
+    cout<<components.size()<<endl;
+    for(auto vec : components)
+    {
+        cout<<"before pca"<<endl;
         auto [ret,ori_bound] = PCA_angle(vec);
-        
+        cout<<"after pca"<<endl;
         double center_x=ret[0];
         double center_y=ret[1];
         double ang=ret[2];
         int mn_x = ori_bound[0],mx_x = ori_bound[1],mn_y = ori_bound[2],mx_y = ori_bound[3];
-        y.Line(int(center_x-50*cos(ang)),int(center_y-50*sin(ang)),int(center_x+50*cos(ang)),int(center_y+50*sin(ang)));
-        y.DrawCross(int(center_x),int(center_y),5);
+        y.Line(2*int(center_x-50*cos(ang)),2*int(center_y-50*sin(ang)),2*int(center_x+50*cos(ang)),2*int(center_y+50*sin(ang)));
+        y.DrawCross(2*int(center_x),2*int(center_y),10);
         auto rotated=logical_rotate(vec,-ang);
         double xmin=1e9,ymin=1e9,xmax=-1e5,ymax=-1e5;
         for(auto &[x,y] : rotated)
@@ -101,11 +111,11 @@ int main(int argc,char **argv)
         printf("%d Position: %lf %lf Angle: %lf Rectangle: %lf %lf Size: %lf RectSize: %lf Ratio: %lf %s\n",id,center_x,center_y,ang*180/3.141593,xmax-xmin,ymax-ymin,S,rectS,S/rectS,ComponentsTypeName[compType].c_str());
         char tmp[100];
         sprintf(tmp,"%d,%s",id,ComponentsTypeName[compType].c_str());
-        y.DrawASCII(mn_x,mn_y-14,tmp);
-        y.Line(mn_x,mn_y,mx_x,mn_y,ComponentsColor[compType]);
-        y.Line(mn_x,mn_y,mn_x,mx_y,ComponentsColor[compType]);
-        y.Line(mn_x,mx_y,mx_x,mx_y,ComponentsColor[compType]);
-        y.Line(mx_x,mn_y,mx_x,mx_y,ComponentsColor[compType]);
+        y.DrawASCII(2*mn_x,2*mn_y-14,tmp);
+        y.Line(2*mn_x,2*mn_y,2*mx_x,2*mn_y,ComponentsColor[compType]);
+        y.Line(2*mn_x,2*mn_y,2*mn_x,2*mx_y,ComponentsColor[compType]);
+        y.Line(2*mn_x,2*mx_y,2*mx_x,2*mx_y,ComponentsColor[compType]);
+        y.Line(2*mx_x,2*mn_y,2*mx_x,2*mx_y,ComponentsColor[compType]);
         
         //cout<<"Positon: "<<center_x<<" "<<center_y<<" Rectangle "<<xmax-xmin<<" "<<ymax-ymin<<" "<<"ratio "<<S/rectS<<endl;
         id++;
@@ -114,7 +124,7 @@ int main(int argc,char **argv)
     
     PixelBuffer masks(mask,true);
     PixelBuffer filtered(m2,true);
-    r.Save("thresh_out.jpg");  
+    //r.Save("thresh_out.jpg");  
     t.Save("erode.jpg");
     masks.Save("mask.jpg");
     filtered.Save("afterfilter.jpg");
