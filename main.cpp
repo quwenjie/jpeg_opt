@@ -17,8 +17,8 @@ double time_cost();
 
 int main(int argc,char **argv)
 {
-    Eigen::MatrixXi m;
-    PixelBuffer y(1280,960);
+    
+    
     if(argc >3 || argc==1)
     {
         cout << "Usage: ippr [photo name]  [(optional)]" << endl;
@@ -31,8 +31,10 @@ int main(int argc,char **argv)
     if (!strcmp(argv[2],"1"))
     {
         */
+    Eigen::MatrixXi m;
+    
         PixelBuffer buf{argv[1]};
-        
+        PixelBuffer y(1280,960);
         cout <<"read time "<< time_cost() << endl;
 
         PixelBuffer buf2=buf.downscale(2);
