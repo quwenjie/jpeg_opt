@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 using namespace std;
-//extern const char font_en[][72];
+
 PixelBuffer::Pixel PixelBuffer::GetPixel(int x,int y){
     return make_tuple(buf[3*(w*y+x)],buf[3*(w*y+x)+1],buf[3*(w*y+x)+2]);
 }
